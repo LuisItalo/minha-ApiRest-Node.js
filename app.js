@@ -47,12 +47,4 @@ app.use((error, req, res, next) => {
     })
 });
 
-
-// app.use('/teste',(req, res, next) => {
-//     // http.cat sobre status code
-//     res.status(200).send({
-//         mensagem: 'OK, Deu certo'
-//     });    
-// });
-
 module.exports = app;
