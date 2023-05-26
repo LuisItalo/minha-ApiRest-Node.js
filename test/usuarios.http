@@ -1,0 +1,24 @@
+# POST  http://localhost:3000/usuarios/login
+# Content-Type: application/json
+
+
+# {
+#     "email": "luis@teste.com",
+#     "senha": "123456"
+# }
+
+# GET http://localhost:3000/produtos
+# Content-Type: application/json
+
+# {
+
+# }
+
+DELETE http://localhost:3000/localhost:3000/produtos
+Content-Type: application/json
+
+{
+    "idprodutos": 9,
+      "nome": "api",
+      "preco": 39.9
+}

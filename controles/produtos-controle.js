@@ -8,14 +8,14 @@ exports.getProdutos = async (req, res, next) => {
             quantidade: result.length,
             produtos: result.map(prod => {
                 return {
-                    idprodutos: prod.idprodutos,
+                    id_produto: prod.id_produto,
                     nome: prod.nome,
                     preco: prod.preco,
                     imagem_produto: prod.imagem_produto,
                     request: {
                         tipo: 'GET',
                         descricao: 'Retorna os resultados de produtos especificos',
-                        url: 'http://localhost:3000/produtos/' + prod.idprodutos
+                        url: 'http://localhost:3000/produtos/' + prod.id_produto
                     }
                 }
             })
@@ -38,7 +38,7 @@ exports.postProduto = async (req, res, next) => {
         const response = {
             mensagem: 'Produto inserido com sucesso',
             produtoCriado:{
-                idprodutos: result.idprodutos,
+                id_produto: result.id_produto,
                 nome: req.body.nome,
                 preco: req.body.preco,
                 imagem_produto: req.file.path,
@@ -57,8 +57,8 @@ exports.postProduto = async (req, res, next) => {
 
 exports.getUmProduto = async (req, res, next) => {
     try {
-        const query = `SELECT * FROM produtos WHERE idprodutos = ?`;
-        const result = await mysql.execute(query, [req.params.idprodutos]);
+        const query = `SELECT * FROM produtos WHERE id_produto = ?`;
+        const result = await mysql.execute(query, [req.params.id_produto]);
 
         if (result.length == 0) {
             return res.status(404).send({
@@ -67,7 +67,7 @@ exports.getUmProduto = async (req, res, next) => {
         }
         const response = {                    
             produto:{
-                idprodutos: result[0].idprodutos,
+                id_produto: result[0].id_produto,
                 nome: result[0].nome,
                 preco: result[0].preco,
                 imagem_produto: result[0].imagem_produto,
@@ -89,55 +89,98 @@ exports.updateProduto = async (req, res, next) => {
         const query =   `UPDATE produtos
                             SET nome     = ?,
                                 preco    = ?
-                          WHERE idprodutos = ?`;
+                          WHERE id_produto = ?`;
         await mysql.execute(query, [
             req.body.nome, 
             req.body.preco, 
-            req.body.idprodutos
+            req.body.id_produto
         ]);
         const response = {
             mensagem: 'Produto atualizado com sucesso',
             produtoAtualizado:{
-                idprodutos: req.body.idprodutos,
+                idprodutos: req.body.id_produto,
                 nome: req.body.nome,
                 preco: req.body.preco,
                 request: {
                     tipo: 'GET',
                     descricao: 'Retorna os detalhes de um produto especifico',
-                    url: 'http://localhost:3000/produtos/' + req.body.idprodutos 
+                    url: 'http://localhost:3000/produtos/' + req.body.id_produto 
                 }
             }
         }
         return res.status(202).send(response);  
-
     } catch (error) {
         return res.status(500).send({error: error})
     }
 };
 
-exports.deleteProduto = (req, res, next) => {
-    mysql.getConnection((error, conn) => {
-        if (error) { return res.status(500).send({error: error})}
-        conn.query(  
-            `DELETE FROM produtos WHERE idprodutos = ?;`,
-            [req.body.idprodutos],
-            (error, resultado, field) => {
-                conn.release();
-                if (error) { return res.status(500).send({error: error})}
-                const response = {
-                    mensagem: 'Produto removido com sucesso',
-                    request: {
-                        tipo: 'POST',
-                        descricao: 'Insere um produto',
-                        url: 'http://localhost:3000/produtos',
-                        body: {
-                            nome: 'String',
-                            preco: 'Number'
-                        }
-                    }
+exports.deleteProduto = async (req, res, next) => {
+    try {
+        const query = 'DELETE FROM produtos WHERE id_produto = ?';
+        await mysql.execute(query, [req.body.id_produto]);
+
+        const response = {
+            mensagem: 'Produto removido com sucesso',
+            request: {
+                tipo: 'POST',
+                descricao: 'Insere um produto',
+                url: 'http://localhost:3000/produtos',
+                body: {
+                    nome: 'String',
+                    preco: 'Number'
                 }
-                return res.status(202).send(response);
             }
-        )
-    })
+        }
+        return res.status(202).send(response);
+    } catch (error) {
+        return res.status(500).send({error: error})
+    }
 }
+
+exports.postImagem = async (req, res, next) => {
+    try {
+        const query = 'INSERT INTO imagens_produtos (id_produto, caminho) VALUES (?,?)';        
+        const result = await mysql.execute(query, [
+            req.params.id_produto,
+            req.file.path
+        ]);
+
+        const response = {
+            mensagem: 'Imagem inserido com sucesso',
+            imagemCriada:{
+                id_produto: parseInt(req.params.id_produto),
+                id_imagem: result.id_produto,
+                imagem_produto: req.file.path,
+                // request: {
+                //     tipo: 'GET',
+                //     descricao: 'Retorna todos os produtos',
+                //     url: 'http://localhost:3000/produtos' 
+                // }
+            }
+        }
+        return res.status(201).send(response);
+    } catch (error) {
+        return res.status(500).send({ error: error });
+    }  
+};
+
+
+exports.getImagens = async (req, res, next) => {
+    try {
+        const query = "SELECT * FROM imagens_produtos WHERE id_produto = ?;"
+        const result = await mysql.execute(query, [req.params.id_produto])
+        const response = {
+            quantidade: result.length,
+            imagens: result.map(img => {
+                return {
+                    id_produto: parseInt(req.params.id_produto),
+                    id_imagem: img.id_produto,
+                    caminho: img.caminho                    
+                }
+            })
+        }
+        return res.status(200).send(response)
+    } catch (error) {
+        return res.status(500).send({error: error});
+    }
+};
