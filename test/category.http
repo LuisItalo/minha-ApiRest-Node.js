@@ -7,9 +7,9 @@ Content-Type: application/json
 # Inclui uma nova categoria
 POST http://localhost:3000/categories
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoibHVpc0B0ZXN0ZS5jb20iLCJpYXQiOjE2ODUyMTU3NDksImV4cCI6MTY4NTIxOTM0OX0.7nBpfBqIw9tum_rKbmzpHvdwNv4WP5ls1RR7IbOLGAw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImVtYWlsIjoibHVpc0B0ZXN0ZS5jb20iLCJpYXQiOjE2ODUzMTc3NzYsImV4cCI6MTY4NTMyMTM3Nn0.NhcVQUyGQ3qtYQgri8YnS8wg5hJrK9_saS649AfH2ec
 
 {
-    "name" : "Roupas"
+    "name" : "Material Escolar"
 }
 ###

@@ -9,7 +9,7 @@ router.get('/:orderId',                 orderController.getOrderDetail);
 router.delete('/:orderId',              orderController.deleteOrder);
 
 // router.post('/:orderId/pix/billing',    orderController.oAuthGerencianet,
-//                                         orderController.createPixBilling,
+// //                                         orderController.createPixBilling,
 //                                         orderController.getQrCode)
 
 module.exports = router;

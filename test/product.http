@@ -1,10 +1,10 @@
 # Retorna todos os produtos
-GET http://localhost:3000/products/
+GET http://localhost:3000/products/?categoryId=1&name=borracha
 Content-Type: application/json
 ###
 
 # Retorna detalhes de um produto
-GET http://localhost:3000/products/30
+GET http://localhost:3000/products
 Content-Type: application/json
 ###
 

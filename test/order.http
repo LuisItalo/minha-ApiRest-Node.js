@@ -8,18 +8,18 @@ POST http://localhost:3000/orders
 Content-Type: application/json
 
 {
-    "productId": 5,
+    "productId": 29,
     "quantity": 2
 }
 ###
 
 # Get order detail
-GET http://localhost:3000/orders/2
+GET http://localhost:3000/orders/1
 Content-Type: application/json
 ###
 
 
 # Remove an order
-DELETE http://localhost:3000/orders/2
+DELETE http://localhost:3000/orders/7
 Content-Type: application/json
 ###

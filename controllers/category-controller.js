@@ -31,7 +31,7 @@ exports.postCategory = async (req, res, next) => {
                 request: {
                     type: 'GET',
                     description: 'Retorna todas as categorias',
-                    url: process.env.URL_API + 'categories'
+                    url: 'localhost:3000/categories'
                 }
             }
         }
